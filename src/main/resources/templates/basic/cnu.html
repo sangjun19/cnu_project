@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2>상품 목록</h2>
+    </div>
+
+    <hr class="my-4">
+    <div>
+        <div th:each="item : ${cnu}" class="mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${item.title}">제목</h5>
+                    <p class="card-text" th:text="${item.content}">내용</p>
+                    <button type="button" class="btn btn-primary" th:text="${item.content}">구매하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

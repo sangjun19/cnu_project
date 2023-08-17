@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Korean TTS</title>
+</head>
+<body>
+<h1>Korean Text to Speech</h1>
+<div>
+  <p>1. 안녕</p>
+  <p>하세요 반가워요 충남대학교 컴퓨터융합학부 입니다.</p>
+</div>
+<audio id="audioPlayer" controls>
+  Your browser does not support the audio element.
+</audio>
+
+<script>
+  var audio = document.getElementById('audioPlayer');
+  var paragraphs = document.querySelectorAll('p');
+  var text = '';
+
+  paragraphs.forEach(function (paragraph) {
+    text += paragraph.innerText + ' ';
+  });
+
+  var isPlaying = false;
+  var lastPausedTime = 0; // 일시 정지 시간
+
+  var toggleAudio = function () {
+    if (isPlaying) {
+      lastPausedTime = audio.currentTime; // 현재 재생 위치 저장
+      audio.pause(); // 음성 멈춤
+    } else {
+      fetch('/tts?text=' + encodeURIComponent(text))
+              .then(response => response.blob())
+              .then(blob => {
+                var objectUrl = URL.createObjectURL(blob);
+                audio.src = objectUrl;
+
+                if (lastPausedTime > 0) {
+                  audio.currentTime = lastPausedTime; // 이전 재생 위치로 이동
+                }
+
+                audio.play(); // 음성 재생
+              })
+              .catch(error => console.error('Error:', error));
+    }
+
+    isPlaying = !isPlaying; // 플레이 상태 토글
+  };
+
+  window.addEventListener('keydown', function (event) {
+    if (event.code === 'Space') {
+      toggleAudio();
+    }
+  });
+</script>
+</body>
+</html>

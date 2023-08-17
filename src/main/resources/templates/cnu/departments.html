@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Departments</title>
+</head>
+<body>
+<h1>Departments</h1>
+<ul>
+  <li th:each="department : ${departments}">
+    <a th:href="@{/cnu/announcements/{departmentId}(departmentId=${department.id})}" th:text="${department.name}"></a>
+  </li>
+</ul>
+</body>
+</html>

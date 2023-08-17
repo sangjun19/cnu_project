@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University List</title>
+</head>
+<body>
+<h1>대학 목록</h1>
+
+<ul id="universityList"></ul>
+
+<script>
+    const apiUrl = "http://13.124.243.146:8080/api/cnu";
+
+    // 대학 목록 가져오기
+    fetch(`${apiUrl}/universities`)
+        .then(response => response.json())
+        .then(data => {
+            const universityList = document.getElementById("universityList");
+            data.forEach(university => {
+                const listItem = document.createElement("li");
+                listItem.textContent = university.name;
+                universityList.appendChild(listItem);
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching university list:", error);
+        });
+</script>
+</body>
+</html>
