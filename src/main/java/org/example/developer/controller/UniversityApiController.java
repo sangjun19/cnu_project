@@ -54,7 +54,7 @@ public class UniversityApiController {
     @Autowired
     private ContentService contentService;
 
-    public void getData() {
+    private void getData() {
 
         contentRepository.deleteAll();
         announcementRepository.deleteAll();
@@ -114,7 +114,7 @@ public class UniversityApiController {
         return universityRepository.findAll();
     }
 
-    @GetMapping("/departments/{universityId}")
+    @GetMapping("/departments")
     public List<Department> getDepartmentsByUniversity(@PathVariable Long universityId) {
         return departmentRepository.findByUniversityId(universityId);
     }

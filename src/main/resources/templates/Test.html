@@ -3,29 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>University List</title>
+    <title>University Data</title>
 </head>
 <body>
-<h1>대학 목록</h1>
+<h1>University Data</h1>
 
-<ul id="universityList"></ul>
+<h2>Universities</h2>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+    </tr>
+    <tbody id="universityTableBody"></tbody>
+</table>
+
+<h2>Departments</h2>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>University ID</th>
+    </tr>
+    <tbody id="departmentTableBody"></tbody>
+</table>
+
+<h2>Announcements</h2>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Department ID</th>
+    </tr>
+    <tbody id="announcementTableBody"></tbody>
+</table>
+
+<h2>Contents</h2>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Content</th>
+        <th>Announcement ID</th>
+    </tr>
+    <tbody id="contentTableBody"></tbody>
+</table>
 
 <script>
-    const apiUrl = "http://13.124.243.146:8080/api/cnu";
-
-    // 대학 목록 가져오기
-    fetch(`${apiUrl}/universities`)
+    fetch('http://13.124.243.146:8080/api/cnu/universities')
         .then(response => response.json())
         .then(data => {
-            const universityList = document.getElementById("universityList");
+            const universityTableBody = document.getElementById('universityTableBody');
             data.forEach(university => {
-                const listItem = document.createElement("li");
-                listItem.textContent = university.name;
-                universityList.appendChild(listItem);
+                const row = universityTableBody.insertRow();
+                row.insertCell(0).textContent = university.id;
+                row.insertCell(1).textContent = university.name;
             });
-        })
-        .catch(error => {
-            console.error("Error fetching university list:", error);
+        });
+
+    fetch(`http://13.124.243.146:8080/api/cnu/departments/19`) // Change the university ID as needed
+        .then(response => response.json())
+        .then(data => {
+            const departmentTableBody = document.getElementById('departmentTableBody');
+            data.forEach(department => {
+                const row = departmentTableBody.insertRow();
+                row.insertCell(0).textContent = department.id;
+                row.insertCell(1).textContent = department.name;
+                row.insertCell(2).textContent = department.university.id;
+            });
+        });
+
+    fetch('/api/cnu/announcements/1') // Change the department ID as needed
+        .then(response => response.json())
+        .then(data => {
+            const announcementTableBody = document.getElementById('announcementTableBody');
+            data.forEach(announcement => {
+                const row = announcementTableBody.insertRow();
+                row.insertCell(0).textContent = announcement.id;
+                row.insertCell(1).textContent = announcement.title;
+                row.insertCell(2).textContent = announcement.department.id;
+            });
+        });
+
+    fetch('/api/cnu/contents/1') // Change the announcement ID as needed
+        .then(response => response.json())
+        .then(data => {
+            const contentTableBody = document.getElementById('contentTableBody');
+            data.forEach(content => {
+                const row = contentTableBody.insertRow();
+                row.insertCell(0).textContent = content.id;
+                row.insertCell(1).textContent = content.content;
+                row.insertCell(2).textContent = content.announcement.id;
+            });
         });
 </script>
 </body>

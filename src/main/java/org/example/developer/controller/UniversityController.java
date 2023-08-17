@@ -55,7 +55,7 @@ public class UniversityController {
     @Autowired
     private ContentService contentService;
 
-    public void getData() {
+    private void getData() {
 
         contentRepository.deleteAll();
         announcementRepository.deleteAll();
