@@ -114,7 +114,7 @@ public class UniversityApiController {
         return universityRepository.findAll();
     }
 
-    @GetMapping("/departments")
+    @GetMapping("/departments/{universityId}")
     public List<Department> getDepartmentsByUniversity(@PathVariable Long universityId) {
         return departmentRepository.findByUniversityId(universityId);
     }

@@ -56,19 +56,25 @@
                 const row = universityTableBody.insertRow();
                 row.insertCell(0).textContent = university.id;
                 row.insertCell(1).textContent = university.name;
-            });
-        });
 
-    fetch(`http://13.124.243.146:8080/api/cnu/departments/19`) // Change the university ID as needed
-        .then(response => response.json())
-        .then(data => {
-            const departmentTableBody = document.getElementById('departmentTableBody');
-            data.forEach(department => {
-                const row = departmentTableBody.insertRow();
-                row.insertCell(0).textContent = department.id;
-                row.insertCell(1).textContent = department.name;
-                row.insertCell(2).textContent = department.university.id;
+                // Fetch departments using university.id
+                const departmentUrl = `http://13.124.243.146:8080/api/cnu/departments/${university.id}`;
+                fetch(departmentUrl)
+                    .then(response => response.json())
+                    .then(departmentData => {
+                        // Add department data to the row
+                        const departmentCell = row.insertCell(2);
+                        departmentData.forEach(department => {
+                            departmentCell.innerHTML += `${department.name}<br>`;
+                        });
+                    })
+                    .catch(error => {
+                        console.error("Error fetching departments:", error);
+                    });
             });
+        })
+        .catch(error => {
+            console.error("Error fetching university data:", error);
         });
 
     fetch('/api/cnu/announcements/1') // Change the department ID as needed
