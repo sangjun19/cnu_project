@@ -12,6 +12,6 @@ public class TestController {
 
     @GetMapping("/Test2/{universityId}")
     public String index2() {
-        return "Test2";
+        return "university_details";
     }
 }

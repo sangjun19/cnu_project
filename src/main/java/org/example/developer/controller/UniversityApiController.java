@@ -103,10 +103,13 @@ public class UniversityApiController {
 
 
                 //contentList.add(content);
+                University tit = new University();
+                tit.setName(title);
+                universityService.saveUniversity(tit);
 
-                University engineering = new University();
-                engineering.setName(content);
-                universityService.saveUniversity(engineering);
+                University con = new University();
+                con.setName(content);
+                universityService.saveUniversity(con);
 
 
                 //System.out.println("제목: " + title);

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Details</title>
+</head>
+<body>
+<h1>University Details</h1>
+<div id="university-details">
+    <h2 id="university-name"></h2>
+    <p id="university-id"></p>
+    <p id="university-location"></p>
+    <!-- Add more university details as needed -->
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const universityId = urlParams.get('id');
+
+    async function fetchUniversityDetails(id) {
+        const response = await fetch(`http://13.124.243.146:8080/api/cnu/universities/${id}`);
+        const university = await response.json();
+
+        const universityNameElement = document.getElementById("university-name");
+        const universityIdElement = document.getElementById("university-id");
+        const universityLocationElement = document.getElementById("university-location");
+
+        universityNameElement.textContent = university.name;
+        universityIdElement.textContent = `ID: ${university.id}`;
+        universityLocationElement.textContent = `Location: ${university.location}`;
+        // Add more university details as needed
+    }
+
+    fetchUniversityDetails(universityId);
+</script>
+</body>
+</html>
