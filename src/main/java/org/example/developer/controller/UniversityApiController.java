@@ -111,7 +111,7 @@ public class UniversityApiController {
 
                 //System.out.println("제목: " + title);
                 //System.out.println("링크: " + link);
-                //System.out.println("내용 : " + content + "\n");
+                System.out.println("내용 : " + content + "\n");
                 if(i == 6) break;
             }
         } catch (IOException e) {
