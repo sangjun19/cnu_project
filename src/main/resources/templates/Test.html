@@ -3,103 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>University Data</title>
+    <title>Universities</title>
 </head>
 <body>
-<h1>University Data</h1>
-
-<h2>Universities</h2>
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-    </tr>
-    <tbody id="universityTableBody"></tbody>
-</table>
-
-<h2>Departments</h2>
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>University ID</th>
-    </tr>
-    <tbody id="departmentTableBody"></tbody>
-</table>
-
-<h2>Announcements</h2>
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Title</th>
-        <th>Department ID</th>
-    </tr>
-    <tbody id="announcementTableBody"></tbody>
-</table>
-
-<h2>Contents</h2>
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Content</th>
-        <th>Announcement ID</th>
-    </tr>
-    <tbody id="contentTableBody"></tbody>
-</table>
+<h1>Universities</h1>
+<ul id="universities-list"></ul>
 
 <script>
-    fetch('http://13.124.243.146:8080/api/cnu/universities')
-        .then(response => response.json())
-        .then(data => {
-            const universityTableBody = document.getElementById('universityTableBody');
-            data.forEach(university => {
-                const row = universityTableBody.insertRow();
-                row.insertCell(0).textContent = university.id;
-                row.insertCell(1).textContent = university.name;
+    async function fetchUniversities() {
+        const response = await fetch("http://13.124.243.146:8080/api/cnu/universities");
+        const universities = await response.json();
 
-                // Fetch departments using university.id
-                const departmentUrl = `http://13.124.243.146:8080/api/cnu/departments/${university.id}`;
-                fetch(departmentUrl)
-                    .then(response => response.json())
-                    .then(departmentData => {
-                        // Add department data to the row
-                        const departmentCell = row.insertCell(2);
-                        departmentData.forEach(department => {
-                            departmentCell.innerHTML += `${department.name}<br>`;
-                        });
-                    })
-                    .catch(error => {
-                        console.error("Error fetching departments:", error);
-                    });
-            });
-        })
-        .catch(error => {
-            console.error("Error fetching university data:", error);
-        });
+        const universitiesList = document.getElementById("universities-list");
+        universities.forEach(university => {
+            const listItem = document.createElement("li");
 
-    fetch('/api/cnu/announcements/1') // Change the department ID as needed
-        .then(response => response.json())
-        .then(data => {
-            const announcementTableBody = document.getElementById('announcementTableBody');
-            data.forEach(announcement => {
-                const row = announcementTableBody.insertRow();
-                row.insertCell(0).textContent = announcement.id;
-                row.insertCell(1).textContent = announcement.title;
-                row.insertCell(2).textContent = announcement.department.id;
-            });
-        });
+            const link = document.createElement("a");
+            link.textContent = university.name;
+            link.href = `Test2/${university.id}`; // Fix the link
 
-    fetch('/api/cnu/contents/1') // Change the announcement ID as needed
-        .then(response => response.json())
-        .then(data => {
-            const contentTableBody = document.getElementById('contentTableBody');
-            data.forEach(content => {
-                const row = contentTableBody.insertRow();
-                row.insertCell(0).textContent = content.id;
-                row.insertCell(1).textContent = content.content;
-                row.insertCell(2).textContent = content.announcement.id;
-            });
+            listItem.appendChild(link);
+            universitiesList.appendChild(listItem);
         });
+    }
+
+    fetchUniversities();
 </script>
 </body>
 </html>

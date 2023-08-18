@@ -9,4 +9,9 @@ public class TestController {
     public String index() {
         return "Test"; // HTML 파일명
     }
+
+    @GetMapping("/Test2/{universityId}")
+    public String index2() {
+        return "Test2";
+    }
 }

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -54,6 +55,9 @@ public class UniversityApiController {
     @Autowired
     private ContentService contentService;
 
+//    @Autowired
+//    ArrayList<String> contentList = new ArrayList<>();
+
     private void getData() {
 
         contentRepository.deleteAll();
@@ -63,14 +67,14 @@ public class UniversityApiController {
 
         String url = "https://computer.cnu.ac.kr/computer/index.do";
 
-        University engineering = new University();
-        engineering.setName("Engineering university2");
-        universityService.saveUniversity(engineering);
-
-        Department computer = new Department();
-        computer.setName("Computer Science2");
-        computer.setUniversity(engineering);
-        departmentService.saveDepartment(computer);
+//        University engineering = new University();
+//        engineering.setName("공과대학");
+//        universityService.saveUniversity(engineering);
+//
+//        Department computer = new Department();
+//        computer.setName("컴퓨터융합학부");
+//        computer.setUniversity(engineering);
+//        departmentService.saveDepartment(computer);
 
         try {
             Document document = Jsoup.connect(url).get();
@@ -87,15 +91,22 @@ public class UniversityApiController {
                 Elements contentDiv = document2.select(".fr-view");
                 String content = contentDiv.text();
 
-                Announcement announcement = new Announcement();
-                announcement.setTitle(title);
-                announcement.setDepartment(computer);
-                announcementService.saveAnnouncement(announcement);
+//                Announcement announcement = new Announcement();
+//                announcement.setTitle(title);
+//                announcement.setDepartment(computer);
+//                announcementService.saveAnnouncement(announcement);
+//
+//                Content con = new Content();
+//                con.setContent(content);
+//                con.setAnnouncement(announcement);
+//                contentService.saveContent(con);
 
-                Content con = new Content();
-                con.setContent(content);
-                con.setAnnouncement(announcement);
-                contentService.saveContent(con);
+
+                //contentList.add(content);
+
+                University engineering = new University();
+                engineering.setName(content);
+                universityService.saveUniversity(engineering);
 
 
                 //System.out.println("제목: " + title);
@@ -112,6 +123,7 @@ public class UniversityApiController {
     public List<University> getAllUniversities() {
         getData();
         return universityRepository.findAll();
+        //return contentList;
     }
 
     @GetMapping("/departments/{universityId}")
@@ -126,6 +138,21 @@ public class UniversityApiController {
 
     @GetMapping("/contents/{announcementId}")
     public List<Content> getContentsByAnnouncement(@PathVariable Long announcementId) {
+        return contentRepository.findByAnnouncementId(announcementId);
+    }
+
+    @PostMapping("/departments")
+    public List<Department> getDepartmentsByUniversityId(@RequestBody Long universityId) {
+        return departmentRepository.findByUniversityId(universityId);
+    }
+
+    @PostMapping("/announcements")
+    public List<Announcement> getAnnouncementsByDepartmentId(@RequestBody Long departmentId) {
+        return announcementRepository.findByDepartmentId(departmentId);
+    }
+
+    @PostMapping("/contents")
+    public List<Content> getContentsByAnnouncementId(@RequestBody Long announcementId) {
         return contentRepository.findByAnnouncementId(announcementId);
     }
 }
