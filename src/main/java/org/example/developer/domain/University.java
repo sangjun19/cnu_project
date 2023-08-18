@@ -16,6 +16,7 @@ public class University {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 5000)
     private String name;
 
     @OneToMany(mappedBy = "university")
